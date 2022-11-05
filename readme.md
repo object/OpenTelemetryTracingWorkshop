@@ -46,6 +46,17 @@ dotnet ef database update
 .\QueueConsumer\bin\Debug\net6.0\QueueConsumer.exe
 ```
 
+### Selecting workshop stages
+
+Each workshop stage has a corresponding Git commit and can be retrieved using git checkout with a respective hash:
+
+1. Setting up Docker containers (460306)
+2. Simple console app (01db6a)
+3. Web App with support for MS SQL Server and MySQL (Windows and Mac/Intel) (9f66e3)
+4. Support for Azure SQL Edge (Mac/M1) (6edbd8)
+5. Web App Client (241515)
+6. RabbitMQ publisher and consumer (36d289)
+
 ## Other resources
 
 To do this exploration in general, but particularly the RabbitMQ bits, relied heavily on the docs and examples provided in the [OpenTelemetry .NET repository](https://github.com/open-telemetry/opentelemetry-dotnet), like the [OpenTelemetry Example Application](https://github.com/open-telemetry/opentelemetry-dotnet/tree/core-1.1.0/examples/MicroserviceExample).

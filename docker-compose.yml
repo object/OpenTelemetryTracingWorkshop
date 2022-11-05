@@ -1,0 +1,37 @@
+version: "1"
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    hostname: jaeger
+    container_name: jaeger
+    ports:
+      - "6831:6831/udp" # accepts jaeger.thrift over compact thrift protocol
+      - "16686:16686" # ui
+      # for more ports and information, check https://www.jaegertracing.io/docs/1.26/getting-started/
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    hostname: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: Password1
+      ACCEPT_EULA: "Y"
+  mysql:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: Password1
+      MYSQL_DATABASE: words
+      MYSQL_USER: user
+      MYSQL_PASSWORD: Password1
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" # rabbit itself
+      - "15672:15672" # management ui

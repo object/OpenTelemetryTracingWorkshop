@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Honeycomb.OpenTelemetry;
 using Microsoft.EntityFrameworkCore;
+using MqPublisher;
 using MySqlConnector;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<WordDbContext>(x => x.UseSqlServer(builder.Configu
 // Configure OpenTelemetry settings
 using var tracerProvider = Sdk.CreateTracerProviderBuilder()
     .AddSource(serviceName)
+    .AddSource(nameof(MessagePublisher))
     .AddSource("MySqlConnector")
     .SetResourceBuilder(
         ResourceBuilder.CreateDefault()
@@ -72,6 +74,10 @@ app.MapGet("/word", async (WordDbContext dbContext) =>
                 break;
         }
         activity?.SetTag("word", result);
+        using (var publisher = new MessagePublisher())
+        {
+            await publisher.PublishAsync(result);
+        }
         return result;
     });
 
